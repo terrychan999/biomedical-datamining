@@ -1,0 +1,17 @@
+possible motif: CGCGCGCGCG
+>Sequence1
+pos:279 CGCGCGCGAG
+>Sequence2
+pos:201 CACGCGCGCG
+>Sequence2
+pos:203 CGCGCGCGCC
+>Sequence3
+pos:435 CGAGCGCGCG
+>Sequence4
+pos:212 CGCGAGCGCG
+>Sequence5
+pos:229 AGCGCGCGCG
+>Sequence5
+pos:231 CGCGCGCGAG
+>Sequence6
+pos:206 CGCGCGCGCA
