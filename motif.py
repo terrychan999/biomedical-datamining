@@ -1,7 +1,7 @@
 import os
 import sys
 
-
+# 讀取fasta
 def parseFileToFasta(filePath):
     fasta = dict()
     file = open(filePath, "r")
@@ -17,7 +17,7 @@ def parseFileToFasta(filePath):
                 fasta[fasta_id] += line.strip().upper()
     return motif_length, fasta
 
-
+# sliding window產生所有位置的dna segment
 def genMotif(motif_length, fasta):
     motifDict = dict()
     for fasta_id, sequence in fasta.items():
@@ -26,7 +26,7 @@ def genMotif(motif_length, fasta):
             motifDict[fasta_id].append(sequence[index: index+motif_length])
     return motifDict
 
-
+# hamming distance
 def diff(seq1, seq2):
     score = 0
     for index in range(motif_length):
@@ -34,12 +34,13 @@ def diff(seq1, seq2):
             score += 1
     return score
 
-
+# 以第一個sequence為基準, 將sequence 1的所有dna segment與其他所有sequence比較
 def genScoreTable(motifDict):
     fasta_id1, motif1 = list(motifDict.items())[0]
     mutated_motif1 = list()
     score_table = dict()
     for seq1 in motif1:
+        # 考慮dna sequence 有 1 mutation base
         for mutation in ["A", "T", "C", "G"]:
             for character in range(len(seq1)):
                 mutated = list(seq1)
@@ -47,6 +48,7 @@ def genScoreTable(motifDict):
                     mutated[character] = mutation
                     mutated_str = "".join(mutated)
                     mutated_motif1.append(mutated_str)
+    mutated_motif1.append(seq1)
 
     for mutated_str in mutated_motif1:
         for fasta_id, motif in list(motifDict.items())[1:]:
@@ -65,6 +67,7 @@ if __name__ == "__main__":
     motif_length, fasta = parseFileToFasta(file)
     motifDict = genMotif(motif_length, fasta)
     score_table = genScoreTable(motifDict)
+    # 出現次數最高的 segemnt便是可能的motif
     score_table = sorted(score_table.items(), key=lambda x: x[1])
     k, v = score_table[-1]
     print(f"possible motif: {k}")
